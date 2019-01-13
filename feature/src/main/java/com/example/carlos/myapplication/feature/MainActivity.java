@@ -7,7 +7,7 @@ import android.widget.*;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    DatabaseHelper myDb;
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        myDb= new DatabaseHelper(this);
 
         //Obtener todos los elementos de la vista
         Button botonLoguear=(Button) findViewById(R.id.buttonEnviar);
