@@ -1,6 +1,7 @@
 package com.example.carlos.myapplication.feature;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -14,7 +15,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //crea la base de datos
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME,null,1);
-
     }
 
     //cuando se crea la bd crea la tabla
@@ -29,17 +29,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS Accounts_table ");
         onCreate(db);
     }
+    //inserta una cuenta
     public boolean insertData(String Nick,String Password){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(col2,Nick);
         contentValues.put(col3,Password);
-        long respuesta=db.insert("Accounts_table",null,contentValues);
+        long respuesta=db.insert(TABLE_NAME,null,contentValues);
         if (respuesta ==-1){
             return false;
         }else {
             return true;
         }
-
+    }
+    //Retorna todas las cuentas de la bd
+    public Cursor getAllData(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from Accounts_table ",null);
+        return res;
     }
 }

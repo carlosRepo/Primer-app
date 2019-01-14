@@ -1,5 +1,7 @@
 package com.example.carlos.myapplication.feature;
 
+import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +10,13 @@ import android.widget.*;
 
 public class MainActivity extends AppCompatActivity {
     DatabaseHelper myDb;
+    Button botonLoguear;
+    Button botonRegistro;
+    Button botonShowAll;
+    EditText textNick;
+    EditText textPassword;
+    EditText textNickRegistro;
+    EditText textPasswordRegistro;
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
@@ -17,15 +26,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //crear un objeto para manipular la bd
         myDb  = new DatabaseHelper(this);
-
         //Obtener todos los elementos de la vista
-        final Button botonLoguear=(Button) findViewById(R.id.buttonEnviar);
-        final Button botonRegistro=(Button) findViewById(R.id.buttonRegstro);
-        final EditText textNick=(EditText) findViewById(R.id.editTextCorreo);
-        final EditText textPassword=(EditText) findViewById(R.id.editTextPassword);
-        final EditText textNickRegistro=(EditText) findViewById(R.id.editTextNickRegistro);
-        final EditText textPasswordRegistro=(EditText) findViewById(R.id.editTextPasswordRegistro);
+        botonLoguear=(Button) findViewById(R.id.buttonEnviar);
+        botonRegistro=(Button) findViewById(R.id.buttonRegistro);
+        botonShowAll=(Button) findViewById(R.id.buttonShowAll);
+        textNick=(EditText) findViewById(R.id.editTextCorreo);
+        textPassword=(EditText) findViewById(R.id.editTextPassword);
+        textNickRegistro=(EditText) findViewById(R.id.editTextNickRegistro);
+        textPasswordRegistro=(EditText) findViewById(R.id.editTextPasswordRegistro);
+        botonLoguear();
+        botonRegistrar();
+        botonMostrar();
+    }
+
+    public void botonLoguear(){
         //Evento boton Loguear
         botonLoguear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,9 +54,12 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,("Ingrese su contraseña."),Toast.LENGTH_LONG).show();
                     return;
                 }
-                Toast.makeText(MainActivity.this,("Logueado Exitosamente."),Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,("Logueado."),Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void botonRegistrar(){
         //Evento boton Registro
         botonRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,13 +78,43 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(MainActivity.this,("Error en la bd."),Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+    }
 
+
+
+
+    public void botonMostrar(){
+        //Evento boton Ver Todos
+        botonShowAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cursor res = myDb.getAllData();
+                if (res.getCount()==0){
+                    showMessage("Error","No Accounts Founded");
+                    return;
+                }else {
+                    StringBuffer buffer = new StringBuffer();
+                    while (res.moveToNext()){
+                        buffer.append("Id :"+res.getString(0)+"\n");
+                        buffer.append("Nick :"+res.getString(1)+"\n");
+                        buffer.append("Pass :"+res.getString(2)+"\n\n");
+                    }
+                    showMessage("Cuentas",buffer.toString());
+                }
 
             }
         });
-
     }
 
+    public void showMessage(String title,String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
+    }
     /**
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.
