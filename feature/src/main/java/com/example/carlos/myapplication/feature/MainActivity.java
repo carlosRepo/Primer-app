@@ -13,6 +13,9 @@ public class MainActivity extends AppCompatActivity {
     Button botonLoguear;
     Button botonRegistro;
     Button botonShowAll;
+    Button botonUpdate;
+    Button botonDelete;
+    EditText textId;
     EditText textNick;
     EditText textPassword;
     EditText textNickRegistro;
@@ -32,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         botonLoguear=(Button) findViewById(R.id.buttonEnviar);
         botonRegistro=(Button) findViewById(R.id.buttonRegistro);
         botonShowAll=(Button) findViewById(R.id.buttonShowAll);
+        botonUpdate=(Button) findViewById(R.id.buttonUpdate);
+        botonDelete=(Button) findViewById(R.id.buttonDelete);
+        textId=(EditText) findViewById(R.id.editTextId);
         textNick=(EditText) findViewById(R.id.editTextCorreo);
         textPassword=(EditText) findViewById(R.id.editTextPassword);
         textNickRegistro=(EditText) findViewById(R.id.editTextNickRegistro);
@@ -39,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         botonLoguear();
         botonRegistrar();
         botonMostrar();
+        botonUpdate();
     }
 
     public void botonLoguear(){
@@ -82,9 +89,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-
-
     public void botonMostrar(){
         //Evento boton Ver Todos
         botonShowAll.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +107,31 @@ public class MainActivity extends AppCompatActivity {
                     }
                     showMessage("Cuentas",buffer.toString());
                 }
+
+            }
+        });
+    }
+
+    public void botonUpdate(){
+        //Evento boton Ver Todos
+        botonUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isUpdated=myDb.updateData(textId.getText().toString(),textNickRegistro.getText().toString(),textPasswordRegistro.getText().toString());
+                if (isUpdated==true){
+                    Toast.makeText(MainActivity.this,("Profile Updated."),Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(MainActivity.this,("Not Found."),Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    public void botonDelete(){
+        //Evento boton Ver Todos
+        botonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
             }
         });

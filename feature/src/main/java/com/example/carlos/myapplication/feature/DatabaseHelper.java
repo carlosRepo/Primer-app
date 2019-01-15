@@ -29,9 +29,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS Accounts_table ");
         onCreate(db);
     }
-    //inserta una cuenta
+    //Inserta una cuenta, el id es autoincrementable asi que no se agrega al contentValues
     public boolean insertData(String Nick,String Password){
+        //se crea una instancia de la base de datos
         SQLiteDatabase db = this.getWritableDatabase();
+        //se llena un "list" con el campo de la bd y su valor
         ContentValues contentValues = new ContentValues();
         contentValues.put(col2,Nick);
         contentValues.put(col3,Password);
@@ -48,4 +50,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("select * from Accounts_table ",null);
         return res;
     }
+
+    public boolean updateData(String id, String nick,String password){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(col1,id);
+        contentValues.put(col2,nick);
+        contentValues.put(col3,password);
+        //actualiza dependiendo de la id que reciba con el "id=?"
+        db.update(TABLE_NAME,contentValues,"id=?",new String[]{id});
+        return true;
+    }
+
+
 }
