@@ -62,7 +62,13 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,("Ingrese su contraseña."),Toast.LENGTH_LONG).show();
                     return;
                 }
-                Toast.makeText(MainActivity.this,("Logueado."),Toast.LENGTH_LONG).show();
+                Cursor res = myDb.login(textNick.getText().toString(),textPassword.getText().toString());
+                if (res.getCount()>0){
+                    Toast.makeText(MainActivity.this,("Logueado."),Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(MainActivity.this,("Datos incorrectos."),Toast.LENGTH_LONG).show();
+                }
+
             }
         });
     }
@@ -114,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void botonUpdate(){
-        //Evento boton Ver Todos
+        //Evento boton Actualizar por id
         botonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void botonDelete(){
-        //Evento boton Ver Todos
+        //Evento boton Borrar por id
         botonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Metodo para mostrar mensajes en una ventana emergente
     public void showMessage(String title,String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);

@@ -51,6 +51,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
+    public Cursor getAllDataFromId(String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from Accounts_table where Id = "+id,null);
+        return res;
+    }
+
+    public Cursor login(String nick,String pass){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from Accounts_table where "+col2+" = '"+nick+"' and "+col3+" = '"+pass+"';",null);
+        return res;
+    }
+
     public boolean updateData(String id, String nick,String password){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -61,6 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME,contentValues,"id=?",new String[]{id});
         return true;
     }
+
     //el metodo es integer porque devuelve la cantidad de filas eliminadas
     public Integer deleteData(String id){
         SQLiteDatabase db = this.getWritableDatabase();
