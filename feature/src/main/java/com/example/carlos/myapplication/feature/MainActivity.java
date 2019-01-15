@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         botonRegistrar();
         botonMostrar();
         botonUpdate();
+        botonDelete();
     }
 
     public void botonLoguear(){
@@ -132,7 +133,13 @@ public class MainActivity extends AppCompatActivity {
         botonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Integer deletedRows = myDb.deleteData(textId.getText().toString());
+                //pregunta si borro alguna fila
+                if (deletedRows > 0){
+                    Toast.makeText(MainActivity.this,("Profile Deleted."),Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(MainActivity.this,("Profile not found."),Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

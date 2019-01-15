@@ -57,10 +57,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(col1,id);
         contentValues.put(col2,nick);
         contentValues.put(col3,password);
-        //actualiza dependiendo de la id que reciba con el "id=?"
+        //"id=?" es donde se pregunta y se entrega el valor id como new string
         db.update(TABLE_NAME,contentValues,"id=?",new String[]{id});
         return true;
     }
-
+    //el metodo es integer porque devuelve la cantidad de filas eliminadas
+    public Integer deleteData(String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME,"Id=?",new String[]{id});
+    }
 
 }
